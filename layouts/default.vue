@@ -1,0 +1,93 @@
+<template>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/public/assets/logo-kinotower.png" alt="Logo" width="200" height="40"
+                    class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex">
+                <a href="">
+                    <button class="btn">Sign In</button>
+                </a>
+                <a class="text-decoration-none" style="margin-left: 15px; margin-right: 20px;">
+                    <button class="btn">Sign Up</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="container body py-4 mb-auto">
+        <slot />
+    </div>
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-dark text-light">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-decoration-none lh-1" style="margin-left: 20px;">
+                <img src="/public/assets/logo-kinotower.png" width="100" height="20" lt="">
+            </a>
+            <span class="mb-3 mb-md-0">© 2024 KinoTOWER, Inc</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-light" href="#"><svg class="bi" width="24" height="24">
+                        <use xlink:href="#twitter"></use>
+                    </svg></a></li>
+            <li class="ms-3"><a class="text-light" href="#"><svg class="bi" width="24" height="24">
+                        <use xlink:href="#instagram"></use>
+                    </svg></a></li>
+            <li class="ms-3"><a class="text-light" href="#"><svg class="bi" width="24" height="24">
+                        <use xlink:href="#facebook"></use>
+                    </svg></a></li>
+        </ul>
+    </footer>
+</template>
+
+<style>
+    .navbar-brand {
+        margin-top: 5px;
+        margin-left: 20px;
+        margin-bottom: 5px;
+    }
+
+    .collapse {
+        margin-left: 400px;
+    }
+
+    .btn {
+        background-color: #8A13FC;
+        color: white;
+    }
+
+    .btn:hover {
+        background-color: rgba(94, 1, 181, 0.8);
+        /* Use rgba for opacity */
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: white;
+    }
+
+    .container.body {
+        min-height: calc(100vh - 40px - 150px);
+    }
+</style>
