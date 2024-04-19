@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="/public/assets/logo-kinotower.png" alt="Logo" width="200" height="40"
@@ -9,7 +9,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="#">Home</a>
@@ -22,12 +22,12 @@
                     </li>
                 </ul>
             </div>
-            <div class="d-flex">
+            <div class="d-flex my-2">
                 <a href="">
                     <button class="btn">Sign In</button>
                 </a>
-                <a class="text-decoration-none" style="margin-left: 15px; margin-right: 20px;">
-                    <button class="btn">Sign Up</button>
+                <a href="">
+                    <button class="btn ml-2">Sign Up</button>
                 </a>
             </div>
         </div>
@@ -64,10 +64,6 @@
         margin-bottom: 5px;
     }
 
-    .collapse {
-        margin-left: 400px;
-    }
-
     .btn {
         background-color: #8A13FC;
         color: white;
@@ -80,10 +76,11 @@
 
     a {
         text-decoration: none;
+        margin-left: 10px;
     }
 
     a:hover {
-        text-decoration: underline;
+        text-decoration: none;
         color: white;
     }
 
