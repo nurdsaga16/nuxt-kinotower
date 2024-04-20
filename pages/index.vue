@@ -1,5 +1,30 @@
 <script lang="ts" setup>
   const storedFilms = useFilmsStore();
+  const storedCategories = useCategoriesStore();
+  const storedCountries = useCountriesStore();
+
+  const category = ref(null);
+  watch(category, (newCategory) => {
+    storedFilms.addCategoriesToParams(newCategory);
+  });
+
+  const country = ref(null);
+  watch(country, (newCountry) => {
+    storedFilms.addCountriesToParams(newCountry);
+  });
+
+  const sortBy = ref('name');
+  watch(sortBy, (newSortBy) => {
+    storedFilms.addSortToParams(newSortBy);
+  })
+
+  const resetParams = () => {
+    category.value = null;
+    country.value = null;
+    sortBy.value = 'name';
+
+    storedFilms.fetchFilms();
+  }
 
   storedFilms.fetchFilms();
 </script>
@@ -7,32 +32,35 @@
 <template>
   <div class="row my-4">
     <div class="col-md-4">
-      <select class="form-select" aria-label="Default select example">
-        <option selected disabled>Select genre...</option>
-        <option value="1">Боевик</option>
-        <option value="2">Драма</option>
-        <option value="3">Комедия</option>
+      <select class="form-select" v-model="category">
+        <option selected :value="null">Все жанры</option>
+        <option v-for="category in storedCategories.categories" 
+                :key="category.id" 
+                :value="category.id">
+                {{ category.name }} ({{ category.filmCount }})
+        </option>
       </select>
     </div>
     <div class="col-md-4">
-      <select class="form-select" aria-label="Default select example">
-        <option selected disabled>Select country...</option>
-        <option value="1">USA</option>
-        <option value="2">Great Britain</option>
-        <option value="3">Kazakhstan</option>
+      <select class="form-select" v-model="country">
+        <option selected :value="null">Все фильмы</option>
+        <option v-for="country in storedCountries.countries" 
+                :key="country.id" 
+                :value="country.id">
+                {{ country.name }}
+        </option>
       </select>
     </div>
     <div class="col-md-3">
-      <select class="form-select" aria-label="Default select example">
-        <option selected disabled>Sort by...</option>
-        <option value="1">Name</option>
-        <option value="2">Year</option>
-        <option value="3">Rating</option>
+      <select class="form-select" v-model="sortBy">
+        <option selected value="name">Сортировка по именам</option>
+        <option value="year">Сортировка по годам</option>
+        <option value="rating">Сортировка по рейтингу</option>
       </select>
     </div>
     <div class="col-md-1">
       <a class="text-decoration-none">
-        <button class="btn">Reset</button>
+        <button class="btn" @click="resetParams">Сбросить</button>
       </a>
     </div>
   </div>
@@ -88,4 +116,5 @@
 
 </script>
 
-<style></style>
+<style>
+</style>
