@@ -24,20 +24,20 @@
             </div>
             <div class="d-flex my-2">
                 <a href="">
-                    <button class="btn">Sign In</button>
+                    <button class="btn login">Войти</button>
                 </a>
                 <a href="">
-                    <button class="btn ml-2">Sign Up</button>
+                    <button class="btn register">Зарегистрироваться</button>
                 </a>
             </div>
         </div>
     </nav>
-    <div class="container body py-4 mb-auto">
+    <div class="container py-4 mb-auto">
         <slot />
     </div>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-dark text-light">
         <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-decoration-none lh-1" style="margin-left: 20px;">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" style="margin-left: 20px;">
                 <img src="/public/assets/logo-kinotower.png" width="100" height="20" lt="">
             </a>
             <span class="mb-3 mb-md-0">© 2024 KinoTOWER, Inc</span>
@@ -64,12 +64,16 @@
         margin-bottom: 5px;
     }
 
-    .btn {
+    .btn.login {
+        color: white;
+    }
+
+    .btn.register {
         background-color: #8A13FC;
         color: white;
     }
 
-    .btn:hover {
+    .btn.register:hover {
         background-color: rgba(94, 1, 181, 0.8);
         /* Use rgba for opacity */
     }
@@ -84,7 +88,7 @@
         color: white;
     }
 
-    .container.body {
-        min-height: calc(100vh - 40px - 150px);
+    .container {
+        min-height: calc(100vh - 138px);
     }
 </style>
