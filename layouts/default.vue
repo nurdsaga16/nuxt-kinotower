@@ -1,9 +1,14 @@
+<script setup lang="ts">
+const storedAuth = useAuthStore();
+
+</script>
+
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="/public/assets/logo-kinotower.png" alt="Logo" width="200" height="40"
-                    class="d-inline-block align-text-top">
+                <img src="/public/assets/logo-kinotower.png" @click="$router.push('/')" alt="Logo" width="200"
+                    height="40" class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,12 +28,16 @@
                 </ul>
             </div>
             <div class="d-flex my-2">
-                <a href="">
-                    <button class="btn login">Войти</button>
-                </a>
-                <a href="">
-                    <button class="btn register">Зарегистрироваться</button>
-                </a>
+                <template v-if="storedAuth.authData" class="d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <a href="#" @click.prevent="$router.push('/profile')" class="profile">{{ storedAuth.authData.fio }}</a>
+                        <button @click="storedAuth.signout(), $router.push('/')" class="btn register ms-3">Выйти</button>
+                    </div>
+                </template>
+                <template v-else>
+                    <button @click="$router.push('/signin')" class="btn login">Войти</button>
+                    <button @click="$router.push('/signup')" class="btn register">Зарегистрироваться</button>
+                </template>
             </div>
         </div>
     </nav>
@@ -37,7 +46,8 @@
     </div>
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-dark text-light">
         <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" style="margin-left: 20px;">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1"
+                style="margin-left: 20px;">
                 <img src="/public/assets/logo-kinotower.png" width="100" height="20" lt="">
             </a>
             <span class="mb-3 mb-md-0">© 2024 KinoTOWER, Inc</span>
@@ -58,37 +68,42 @@
 </template>
 
 <style>
-    .navbar-brand {
-        margin-top: 5px;
-        margin-left: 20px;
-        margin-bottom: 5px;
-    }
+.navbar-brand {
+    margin-top: 5px;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
 
-    .btn.login {
-        color: white;
-    }
+.btn.login {
+    color: white;
+}
 
-    .btn.register {
-        background-color: #8A13FC;
-        color: white;
-    }
+.profile {
+    color: white;
+    text-decoration: none;
+}
 
-    .btn.register:hover {
-        background-color: rgba(94, 1, 181, 0.8);
-        /* Use rgba for opacity */
-    }
+.btn.register {
+    background-color: #8A13FC;
+    color: white;
+}
 
-    a {
-        text-decoration: none;
-        margin-left: 10px;
-    }
+.btn.register:hover {
+    background-color: rgba(94, 1, 181, 0.8);
+    /* Use rgba for opacity */
+}
 
-    a:hover {
-        text-decoration: none;
-        color: white;
-    }
+a {
+    text-decoration: none;
+    margin-left: 10px;
+}
 
-    .container {
-        min-height: calc(100vh - 138px);
-    }
+a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.container {
+    min-height: calc(100vh - 138px);
+}
 </style>

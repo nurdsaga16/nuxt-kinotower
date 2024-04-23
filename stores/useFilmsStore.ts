@@ -54,6 +54,7 @@ export const useFilmsStore = defineStore('films', () => {
     films.value = response.data.films;
     total.value = response.data.total;
   }
+  
 
   return {
     films, 

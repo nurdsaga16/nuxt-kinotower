@@ -25,7 +25,6 @@ const resetParams = () => {
   storedFilms.fetchFilms();
 }
 
-
 const searchQuery = ref('');
 const filteredFilms = computed(() => {
   const query = searchQuery.value.toLowerCase();
@@ -62,14 +61,14 @@ storedFilms.fetchFilms();
           src="https://avatars.dzeninfra.ru/get-zen_doc/10349846/pub_649ec89677a923534ae6e405_649ecc076a9fab54e4a6eb81/scale_1200"
           height="600vh" class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
-          <h5>Форрест Гамп</h5>
+          <h5 style="color: #FFD700;">Форрест Гамп</h5>
           <p>Some representative placeholder content for the first slide.</p>
         </div>
       </div>
       <div class="carousel-item">
         <img src="https://www.pluggedin.ru/images/144-bigTopImage.jpeg" height="600vh" class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
-          <h5>Темный рыцарь</h5>
+          <h5 style="color: #FFD700;">Темный рыцарь</h5>
           <p>Some representative placeholder content for the second slide.</p>
         </div>
       </div>
@@ -78,7 +77,7 @@ storedFilms.fetchFilms();
           src="https://kinotv.ru/upload/delight.webpconverter/upload/iblock/5d3/5d3992049cc80d9672aca03522581296/bdde9ff8867903fa1d5442424735e08e.jpg.webp?1700052409143424"
           height="600vh" class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
-          <h5>Начало</h5>
+          <h5 style="color: #FFD700;">Начало</h5>
           <p>Some representative placeholder content for the third slide.</p>
         </div>
       </div>
@@ -86,7 +85,7 @@ storedFilms.fetchFilms();
         <img src="https://static.sweet.tv/images/cache/movie_banners/BCPYQAISAJ2WWIAC/17439-interstellar_1280x720.jpg"
           height="600vh" class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
-          <h5>Интерстеллар</h5>
+          <h5 style="color: #FFD700;">Интерстеллар</h5>
           <p>Some representative placeholder content for the third slide.</p>
         </div>
       </div>
@@ -94,7 +93,7 @@ storedFilms.fetchFilms();
         <img src="https://thumbs.dfs.ivi.ru/storage30/contents/c/c/e934645a5e1cc379ebd22e1a3bd3fa.jpg/858x483/?q=85"
           height="600vh" class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
-          <h5>1+1</h5>
+          <h5 style="color: #FFD700;">1+1</h5>
           <p>Some representative placeholder content for the third slide.</p>
         </div>
       </div>
@@ -121,10 +120,9 @@ storedFilms.fetchFilms();
           <div class="col mb-3">
             <div class="filter">
               <h5 class="filter-header">Все жанры</h5>
-              <a href="#" style="text-decoration: none;"  class="filter"
+              <a href="#" style="text-decoration: none;" class="filter"
                 v-for="categoryItem in storedCategories.categories" :key="categoryItem.id"
-                :class="{ 'active': categoryItem.id === category }" 
-                @click.prevent="selectCategory(categoryItem.id)">
+                :class="{ 'active': categoryItem.id === category }" @click.prevent="selectCategory(categoryItem.id)">
                 {{ categoryItem.name }} ({{ categoryItem.filmCount }})
               </a>
             </div>
@@ -132,20 +130,23 @@ storedFilms.fetchFilms();
           <div class="col mb-3">
             <div class="filter">
               <h5 class="filter-header">Все страны</h5>
-              <a href="#" style="text-decoration: none;"  class="filter"
-                v-for="countryItem in storedCountries.countries" :key="countryItem.id"
-                :class="{ 'active': countryItem.id === country }" 
+              <a href="#" style="text-decoration: none;" class="filter" v-for="countryItem in storedCountries.countries"
+                :key="countryItem.id" :class="{ 'active': countryItem.id === country }"
                 @click.prevent="selectCountry(countryItem.id)">
                 {{ countryItem.name }}
               </a>
             </div>
           </div>
           <div class="col mb-3">
-            <select class="form-select" v-model="sortBy">
-              <option selected value="name">Сортировка по именам</option>
-              <option value="year">Сортировка по годам</option>
-              <option value="rating">Сортировка по рейтингу</option>
-            </select>
+            <div class="filter">
+              <h5 class="filter-header">Сортировка</h5>
+              <a href="#" style="text-decoration: none;" class="filter" @click.prevent="sortBy = 'name'"
+                :class="{ 'active': sortBy === 'name' }">По именам</a>
+              <a href="#" style="text-decoration: none;" class="filter" @click.prevent="sortBy = 'year'"
+                :class="{ 'active': sortBy === 'year' }">По годам</a>
+              <a href="#" style="text-decoration: none;" class="filter" @click.prevent="sortBy = 'rating'"
+                :class="{ 'active': sortBy === 'rating' }">По рейтингу</a>
+            </div>
           </div>
           <div class="col">
             <a class="text-decoration-none">
@@ -156,8 +157,12 @@ storedFilms.fetchFilms();
       </div>
 
 
-      <!-- Фильмы справа -->
-      <div class="col-md-9">
+      <div class="d-flex justify-content-center" v-if="storedFilms.isLoading">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div class="col-md-9" v-else>
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col" v-for="film in filteredFilms" :key="film.id">
             <div class="card h-100">
@@ -297,7 +302,8 @@ storedFilms.fetchFilms();
 }
 
 .filter.active {
-  display: inline-block; /* Позволяет контейнеру занимать только необходимое пространство */
+  display: inline-block;
+  /* Позволяет контейнеру занимать только необходимое пространство */
   background-color: #8A13FC;
   color: white;
   border-radius: 10px;
