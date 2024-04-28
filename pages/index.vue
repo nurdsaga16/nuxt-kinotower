@@ -3,7 +3,7 @@
 const storedFilms = useFilmsStore();
 const storedCategories = useCategoriesStore();
 const storedCountries = useCountriesStore();
-
+const storedFavorites = useFavoritesStore();
 
 const category = ref(null);
 watch(category, (newCategory) => {
@@ -31,90 +31,33 @@ const filteredFilms = computed(() => {
   return storedFilms.films.filter(film => film.name.toLowerCase().startsWith(query));
 });
 
-const selectCategory = (categoryId) => {
+const selectCategory = (categoryId: number) => {
   category.value = categoryId;
 };
-const selectCountry = (countryId) => {
+const selectCountry = (countryId: number) => {
   country.value = countryId;
 }
+
+const toggleFavorite = (filmId: number) => {
+  if (storedFavorites.isFavorite(filmId)) {
+    storedFavorites.removeFavoritesData(filmId);
+  } else {
+    storedFavorites.addFavorite(filmId);
+  }
+};
 
 storedFilms.fetchFilms();
 </script>
 
 <template>
-  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-        aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-        aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-        aria-label="Slide 3"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
-        aria-label="Slide 4"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
-        aria-label="Slide 5"></button>
-    </div>
-    <div class="carousel-inner rounded-3">
-      <div class="carousel-item active">
-        <img
-          src="https://avatars.dzeninfra.ru/get-zen_doc/10349846/pub_649ec89677a923534ae6e405_649ecc076a9fab54e4a6eb81/scale_1200"
-          height="600vh" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: #FFD700;">Форрест Гамп</h5>
-          <p>Some representative placeholder content for the first slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img src="https://www.pluggedin.ru/images/144-bigTopImage.jpeg" height="600vh" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: #FFD700;">Темный рыцарь</h5>
-          <p>Some representative placeholder content for the second slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img
-          src="https://kinotv.ru/upload/delight.webpconverter/upload/iblock/5d3/5d3992049cc80d9672aca03522581296/bdde9ff8867903fa1d5442424735e08e.jpg.webp?1700052409143424"
-          height="600vh" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: #FFD700;">Начало</h5>
-          <p>Some representative placeholder content for the third slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img src="https://static.sweet.tv/images/cache/movie_banners/BCPYQAISAJ2WWIAC/17439-interstellar_1280x720.jpg"
-          height="600vh" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: #FFD700;">Интерстеллар</h5>
-          <p>Some representative placeholder content for the third slide.</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img src="https://thumbs.dfs.ivi.ru/storage30/contents/c/c/e934645a5e1cc379ebd22e1a3bd3fa.jpg/858x483/?q=85"
-          height="600vh" class="d-block w-100" alt="...">
-        <div class="carousel-caption d-none d-md-block">
-          <h5 style="color: #FFD700;">1+1</h5>
-          <p>Some representative placeholder content for the third slide.</p>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-  <div class="container mt-4 mb-4">
-    <div class="row mt-5">
+  <div class="container mb-4">
+    <div class="row mt-2">
       <!-- Фильтры слева -->
       <div class="col-md-3 bg-dark rounded-3" style="padding-top: 20px; padding-bottom: 20px;">
         <div class="row flex-column">
           <div class="col mb-3">
             <div class="col mb-3">
-              <input type="text" class="form-control" placeholder="Поиск" v-model="searchQuery">
+              <input type="search" class="form-control" aria-label="Search" placeholder="Поиск" v-model="searchQuery">
             </div>
           </div>
           <div class="col mb-3">
@@ -166,27 +109,35 @@ storedFilms.fetchFilms();
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col" v-for="film in filteredFilms" :key="film.id">
             <div class="card h-100">
-              <img :src="film.link_img" class="card-img-top" alt="..." width="70" height="450">
+              <div style="position: relative;">
+                <div @click="$router.push('/films/' + film.id)"><img :src="film.link_img" class="card-img-top" alt="..." height="450" width="322"></div>
+                <i :class="{ 'fa-solid fa-bookmark': storedFavorites.isFavorite(film.id), 'fa-regular fa-bookmark': !storedFavorites.isFavorite(film.id) }"
+                  @click="toggleFavorite(film.id)"></i>
+              </div>
+
               <div class="card-body">
-                <h5 class="card-title d-flex align-items-center" style="color: #8A13FC;">
-                  {{ film.name }}
-                  <span class="text-dark ms-2 fs-6">({{ film.year_of_issue }})</span>
-                </h5>
+                <div @click="$router.push('/films/' + film.id)">
+                  <h5 class="card-title d-flex align-items-center" style="color: #8A13FC;">
+                    {{ film.name }}
+                    <span class="text-dark ms-2 fs-6">({{ film.year_of_issue }})</span>
+                  </h5>
+                </div>
                 <p class="card-text">{{ film.duration }} мин.</p>
                 <p class="card-text" v-if="film.categories.length != 0">Жанры: <template
                     v-for="(genre, index) in film.categories" :key="genre.id">
                     {{ (index != film.categories.length - 1) ? genre.name + ', ' : genre.name }}
                   </template></p>
                 <p class="card-text" v-else>Нет жанров</p>
-                <p class="card-text">Рейтинг: {{ film.ratingAvg }}</p>
+                <p class="card-text m-0">Рейтинг: {{ film.ratingAvg }}</p>
               </div>
               <div class="card-footer text-center">
                 <small class="text-body-secondary">
                   <a class="text-decoration-none">
-                    <button class="btn reset">Смотреть</button>
+                    <button class="btn reset me-3">Смотреть</button>
                   </a>
                   <a class="text-decoration-none">
-                    <button class="btn bg-dark" style="color: white;">О фильме</button>
+                    <button @click="$router.push('/films/' + film.id)" class="btn bg-dark" style="color: white;">О
+                      фильме</button>
                   </a>
                 </small>
               </div>
@@ -316,5 +267,26 @@ storedFilms.fetchFilms();
 
 .form-control:focus {
   box-shadow: 0 0 0 0.25rem rgba(94, 1, 181, 0.4);
+}
+
+.fa-solid.fa-bookmark {
+  color: white;
+  position: absolute; 
+  top: 0px; 
+  right: 0px;
+  font-size: 40px;
+  background-color: #8A13FC;
+  padding: 10px 10px;
+}
+
+.fa-regular.fa-bookmark {
+  color: white;
+  position: absolute; 
+  top: 0px; 
+  right: 0px;
+  font-size: 40px;
+  background-color: #8A13FC;
+  padding: 10px 10px;
+  border-bottom-left-radius: 10px;
 }
 </style>

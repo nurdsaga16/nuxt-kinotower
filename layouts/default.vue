@@ -6,10 +6,10 @@ const storedAuth = useAuthStore();
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <NuxtLink to="/" class="navbar-brand">
                 <img src="/public/assets/logo-kinotower.png" @click="$router.push('/')" alt="Logo" width="200"
                     height="40" class="d-inline-block align-text-top">
-            </a>
+            </NuxtLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,14 +23,14 @@ const storedAuth = useAuthStore();
                         <a class="nav-link" href="#">Features</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link" href="#">Избранное</a>
                     </li>
                 </ul>
             </div>
             <div class="d-flex my-2">
                 <template v-if="storedAuth.authData" class="d-flex align-items-center justify-content-center">
                     <div class="text-center">
-                        <a href="#" @click.prevent="$router.push('/profile')" class="profile">{{ storedAuth.authData.fio }}</a>
+                        <NuxtLink to="/profile" class="profile">{{ storedAuth.authData.fio }}</NuxtLink>
                         <button @click="storedAuth.signout(), $router.push('/')" class="btn register ms-3">Выйти</button>
                     </div>
                 </template>
@@ -93,12 +93,12 @@ const storedAuth = useAuthStore();
     /* Use rgba for opacity */
 }
 
-a {
+.profile {
     text-decoration: none;
     margin-left: 10px;
 }
 
-a:hover {
+.profile:hover {
     text-decoration: none;
     color: white;
 }

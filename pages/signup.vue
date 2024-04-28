@@ -2,7 +2,7 @@
   <div class="form-container signup">
     <main class="form-signup w-100 m-auto">
       <form @submit.prevent="signup">
-        <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+        <h1 class="h3 my-3 fw-normal">Регистрация</h1>
         <div class="alert alert-danger" role="alert" v-show="errorMessage">
           {{ errorMessage }}
         </div>

@@ -48,10 +48,13 @@ export const useAuthStore = defineStore('auth', () => {
 
     readAuthData();
 
+    console.log(authData.value);
+
     return {
         authData,
         signin,
         signout,
         signup,
+        removeAuthData,
     }
 });
